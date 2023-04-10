@@ -1,0 +1,4 @@
+azure:
+  blobstorage:
+    containername: propertydocuments
+    connectionstring: https://butoladocuments.blob.core.windows.net/propertydocuments

@@ -1,5 +1,6 @@
 package com.butola.mydocsservice.property;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.hateoas.EntityModel;
@@ -22,16 +23,20 @@ import java.util.List;
 @RestController
 @RequestMapping("/property")
 public class PropertyController {
+
+    @Autowired
+    PropertyService propertyService;
+
     @GetMapping(produces = MediaType.APPLICATION_PDF_VALUE)
-    public ResponseEntity<Resource> getPdf() throws Exception {
-        // Load the PDF file
-        Path pdfPath = Paths.get("src/main/resources/images/aadhaar.pdf");
-        byte[] pdfBytes = Files.readAllBytes(pdfPath);
+    public ResponseEntity<Resource> getPdfFile() throws Exception {
+        String blobName = "us.minnesota.edenprairie.yogi.tax";
+        byte[] pdfBytes = propertyService.getPdfFile(blobName);
         ByteArrayResource resource = new ByteArrayResource(pdfBytes);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=file.pdf");
-
+        headers.setContentType(MediaType.APPLICATION_PDF);
+       // headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=file.pdf");
+        headers.setContentDispositionFormData(blobName, blobName);
         // Add HATEOAS links
         /*Link selfLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PropertyController.class).getPdf()).withSelfRel();
         Link downloadLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PropertyController.class).getPdf()).withRel("download");
@@ -40,7 +45,6 @@ public class PropertyController {
         EntityModel<Resource> model = EntityModel.of(resource);
         model.add(links);
 */
-
         return ResponseEntity.ok()
                 .headers(headers)
                 .contentLength(pdfBytes.length)
