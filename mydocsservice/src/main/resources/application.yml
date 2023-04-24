@@ -1,4 +1,4 @@
 azure:
   blobstorage:
     containername: propertydocuments
-    connectionstring: https://butoladocuments.blob.core.windows.net/propertydocuments
+    connectionstring: DefaultEndpointsProtocol=https;AccountName=butoladocuments;AccountKey=ppJijPQobgBGz7dvMcGYBkbkBGmmfT08gNCEkItFAY+LYTqccuwCOKPlTo0h1RIRko7zoPp8zE4f+AStmmON0A==;EndpointSuffix=core.windows.net
